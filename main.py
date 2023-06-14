@@ -199,5 +199,5 @@ with down5:
     st.altair_chart(c)
 
 st.markdown('<div div style="text-align:justify;font-size:20px;" > Menurut data yang diambil dari website Open Data PUPR (Kementerian Pekerjaan Umum dan Perumahan Rakyat)\
-    Indonesia belum melakukan penyebaran pada pengolahan air limbah pada 2021. Ini menjadi evaluasi untuk melakukan penyebaran pada pengolahan air limbah\
+    Indonesia belum melakukan penyebaran pada pengolahan air limbah pada 2021. Ini menjadi evaluasi untuk melakukan penyebaran pengolahan air limbah\
         terutama pada Pulau Sumatra, Kalimantan, dan Sulawesi.</div>', unsafe_allow_html=True)
