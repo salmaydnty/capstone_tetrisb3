@@ -177,6 +177,7 @@ st.markdown('<div div style="text-align:justify;font-size:20px;" > Terdapat kore
 st.markdown("---")
 
 # top 5 and down 5
+df2 = pd.read_csv('IPAL_2021.csv')
 # st.dataframe(df2)
 
 top5, down5 = st.columns(2)
