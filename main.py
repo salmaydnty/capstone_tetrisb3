@@ -4,6 +4,9 @@ import pandas as pd
 import plotly.express as px
 import altair as alt
 import pydeck as pdk
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # dasboard
@@ -131,50 +134,76 @@ deck = pdk.Deck(
 # Render the deck using st.pydeck_chart()
 st.pydeck_chart(deck)
 
-st.markdown("---")
 
+st.markdown('<br>', unsafe_allow_html=True)
+
+# heatmap
+st.markdown('<div  style="text-align:justify; font-size:30px;" > Korelasi Heatmap</div >',
+            unsafe_allow_html=True)
+
+
+@st.cache_data  # 👈 Add the caching decorator
+def load_data(url):
+    df = pd.read_csv(url)
+    return df
+
+
+df = load_data(
+    "https://raw.githubusercontent.com/salmaydnty/capstone_tetrisb3/main/air_sanitasi_2022.csv")
+z = df[['Disposed in situ-National', 'Emptied and treated-National', 'Wastewater treated-National',
+        'Latrines and other-National', 'Septic tanks-National', 'Sewer connections-National']].corr()
+fig = px.imshow(z, text_auto=True)
+st.plotly_chart(fig, theme="streamlit")
+
+st.markdown('<div  style="text-align:justify; font-size:20px;" > Apakah saja faktor yang mempengaruhi air bersih?</div >',
+            unsafe_allow_html=True)
+st.markdown('<div  style="text-align:justify; font-size:20px;" > Dari hasil korelasi ini menunjukkan bahwa ada 2 faktor\
+    yaitu Air Limbah (Wastewater Treated) dan Saluran Pembuangan (Sewer connections). </div >',
+            unsafe_allow_html=True)
+
+st.markdown('<br>', unsafe_allow_html=True)
+# st.markdown('<div div style="text-align:justify;font-size:20px;" > Terdapat korelasi yang kuat antara banyaknya\
+#     air limbah dengan nilai variabel dikelola dengan aman (r=0,829). Hal ini menunjukkan bahwa air limbah dapat\
+#         mempengaruhi terhadap pengelolaan air bersih. </div>', unsafe_allow_html=True)
+# st.markdown('<br>', unsafe_allow_html=True)
 st.markdown('<div  style="text-align:justify; font-size:20px;" > Menurut data Bank Dunia, hanya 2 % dari 10 juta penduduk pusat kota Jakarta\
-    yang memiliki akses ke saluran air limbah umum. Sebagian besar perumahan perkotaan memiliki\
-        septic tank, tetapi bocor dan merembes ke dalam tanah, sehingga jarang membutuhkan penyedot debu. Kotoran rumah tangga\
+    yang memiliki akses ke saluran air limbah umum. Sebagian besar perumahan perkotaan memiliki tangki septik\
+        (septic tank), tetapi bocor dan merembes ke dalam tanah, sehingga jarang membutuhkan penyedot debu. Kotoran rumah tangga\
             yang disedot biasanya tidak dikirim ke instalasi pengolahan air limbah. Menurut data Bank Dunia, 95 % air limbah Indonesia\
                 tumpah ke ladang pertanian, sungai, dan saluran terbuka. Ini memiliki efek kesehatan yang sangat besar.</div >', unsafe_allow_html=True)
 st.markdown("---")
 
-st.markdown('<div  style="text-align:center; font-size:40px;" >Analisis Korelasi</div >',
-            unsafe_allow_html=True)
-st.markdown('<div  style="text-align:center; font-size:30px;" >Korelasi antara Pengelolaan Air dengan Air Limbah.</div >', unsafe_allow_html=True)
-
-# linear regression
 # from train import load_data
 df = pd.read_csv('air_sanitasi_2022.csv')
-# st.dataframe(df)
+
 # linear regression
-df['Safely managed-National'] = (df['Safely managed-National'] - df['Safely managed-National'].min()) / (
-    df['Safely managed-National'].max() - df['Safely managed-National'].min())
-df['Wastewater treated-National'] = (df['Wastewater treated-National'] - df['Wastewater treated-National'].min()) / (
-    df['Wastewater treated-National'].max() - df['Wastewater treated-National'].min())
+# st.markdown('<div  style="text-align:center; font-size:40px;" >Analisis Korelasi</div >',
+#             unsafe_allow_html=True)
+# st.markdown('<div  style="text-align:center; font-size:30px;" >Korelasi antara Pengelolaan Air dengan Air Limbah.</div >', unsafe_allow_html=True)
 
-scatt = px.scatter(df, x=df['Safely managed-National'], y=df['Wastewater treated-National'], color="Negara",
-                   trendline="ols", trendline_scope="overall")
-scatt.update_traces(marker_size=10, showlegend=True)
+# df['Safely managed-National'] = (df['Safely managed-National'] - df['Safely managed-National'].min()) / (
+#     df['Safely managed-National'].max() - df['Safely managed-National'].min())
+# df['Wastewater treated-National'] = (df['Wastewater treated-National'] - df['Wastewater treated-National'].min()) / (
+#     df['Wastewater treated-National'].max() - df['Wastewater treated-National'].min())
 
-# finding linear regression model
-results = px.get_trendline_results(scatt)
-alpha = results.iloc[0]["px_fit_results"].params[0]
-beta = results.iloc[0]["px_fit_results"].params[1]
-rsq = results.iloc[0]["px_fit_results"].rsquared
+# scatt = px.scatter(df, x=df['Safely managed-National'], y=df['Wastewater treated-National'], color="Negara",
+#                    trendline="ols", trendline_scope="overall")
+# scatt.update_traces(marker_size=10, showlegend=True)
 
-scatt.data[2].name = 'y = ' + str(round(alpha, 2)) + ' + ' + str(
-    round(beta, 8)) + 'x' + ' | R-squared = ' + str(round(rsq, 3))
-scatt.data[2].showlegend = True
+# # finding linear regression model
+# results = px.get_trendline_results(scatt)
+# alpha = results.iloc[0]["px_fit_results"].params[0]
+# beta = results.iloc[0]["px_fit_results"].params[1]
+# rsq = results.iloc[0]["px_fit_results"].rsquared
+
+# scatt.data[2].name = 'y = ' + str(round(alpha, 2)) + ' + ' + str(
+#     round(beta, 8)) + 'x' + ' | R-squared = ' + str(round(rsq, 3))
+# scatt.data[2].showlegend = True
+# st.plotly_chart(scatt, use_container_width=True)
 
 
-st.plotly_chart(scatt, use_container_width=True)
+# st.markdown("---")
 
-st.markdown('<div div style="text-align:justify;font-size:20px;" > Terdapat korelasi yang kuat antara banyaknya\
-    air limbah dengan nilai variabel dikelola dengan aman (r=0,827). Hal ini menunjukkan bahwa air limbah dapat\
-        mempengaruhi terhadap pengelolaan air bersih. </div>', unsafe_allow_html=True)
-st.markdown("---")
 
 # top 5 and down 5
 df2 = pd.read_csv('IPAL_2021.csv')
@@ -199,5 +228,5 @@ with down5:
     st.altair_chart(c)
 
 st.markdown('<div div style="text-align:justify;font-size:20px;" > Menurut data yang diambil dari website Open Data PUPR (Kementerian Pekerjaan Umum dan Perumahan Rakyat)\
-    Indonesia belum melakukan penyebaran pada pengolahan air limbah pada 2021. Ini menjadi evaluasi untuk melakukan penyebaran pengolahan air limbah\
+    Indonesia belum melakukan penyebaran pada pengolahan air limbah pada 2021. Ini menjadi evaluasi untuk pemerintah melakukan penyebaran pengolahan air limbah\
         terutama pada Pulau Sumatra, Kalimantan, dan Sulawesi.</div>', unsafe_allow_html=True)
