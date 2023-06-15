@@ -3,3 +3,4 @@ plotly
 altair
 pydeck
 statsmodels
+seaborn
