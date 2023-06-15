@@ -11,6 +11,7 @@ import numpy as np
 
 # dasboard
 st.header("Proporsi Negara yang Menggunakan Persediaan Air dan Sanitasi yang Lebih Baik (Khususnya Indonesia)")
+"by Salma Eka Yudanti (salmaey2022@gmail.com)"
 st.markdown('<br>', unsafe_allow_html=True)
 
 st.markdown('<div style="text-align:justify;font-size:20px;">UNICEF &#40;United Nations Children&#39;s Fund&#41; adalah organisasi PBB\
