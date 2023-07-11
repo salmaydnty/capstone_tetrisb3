@@ -10,7 +10,7 @@ import numpy as np
 
 
 # dasboard
-st.header("Proporsi Negara yang Menggunakan Persediaan Air dan Sanitasi yang Lebih Baik (Khususnya Indonesia)")
+st.header("Apakah Penyebaran Persediaan Air dan Sanitasi di Indonesia Sudah Baik?")
 "by Salma Eka Yudanti (salmaey2022@gmail.com)"
 st.markdown('<br>', unsafe_allow_html=True)
 
